@@ -1,29 +1,35 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ListItem, ThemeProvider } from 'react-native-elements';
 import { useColorScheme } from 'react-native-appearance';
 
-
+import { videos } from './variables/videos'
 import YoutubeView from './components/YoutubeView'
 
 export default function App() {
   let colorScheme = useColorScheme();
 
-  const videos = [
-    {key: 1, videoId: "BpiRMVV_WhE"},
-    {key: 2, videoId: "22FfQHW_YFE"},
-    {key: 3, videoId: "LgeQR3sFiRI"},
-    {key: 4, videoId: "h5DK0JzICdM"},
-    {key: 5, videoId: "rAwIdpQEsCU"}, 
-  ]
+  const renderItem = ({item}) => (
+    <ListItem style={{ marginTop: 30 }} key={item.key} bottomDivider>
+        <YoutubeView
+          key={item.key}
+          videoId={item.videoId}
+        />
+    </ListItem>
+  )
 
   return (
     <View style={styles.container}>
       <SafeAreaProvider>
         <ThemeProvider useDark={colorScheme === 'dark'}>
-          <ScrollView>
+          <FlatList 
+            data={videos}
+            renderItem={renderItem}
+            keyExtractor={item => item.videoId}
+          />
+          {/* <ScrollView>
             { videos.map((video) => (
               <ListItem style={{ marginTop: 30 }} key={video.key} bottomDivider>
                   <YoutubeView
@@ -32,7 +38,7 @@ export default function App() {
                   />
               </ListItem>
             ))}
-          </ScrollView>
+          </ScrollView> */}
         </ThemeProvider>        
       </SafeAreaProvider>
     </View>
